@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Flask API using AWS SAM
+
+Globals:
+  Function:
+    Timeout: 60
+
+Resources:
+  FlaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      CodeUri: .
+      MemorySize: 128
+      Environment:
+        Variables:
+          POKEAPI_BASE_URL: https://pokeapi.co/api/v2
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
